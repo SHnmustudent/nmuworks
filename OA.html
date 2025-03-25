@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1621959721891-d297dfd9d6ee?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Це і є затемнення */
+            z-index: -1; /* Це ставить затемнення позаду вмісту */
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 20px;
+        }
+
+        h1, p, button {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        h1 { font-size: 50px; }
+        p { font-size: 18px; }    
+        
+       button {
+            border: 2px solid white;
+            background: transparent;
+            padding: 15px 25px;
+            cursor: pointer;
+            font-size: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        button:active {
+            transform: scale(0.95); 
+            background-color: rgb(56, 176, 0);
+            border-color: rgb(158, 240, 26);
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: particleAnimation 1s forwards;
+          }
+
+        @keyframes particleAnimation {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Welcome to the site</h1>
+        <p>Click the button below to add social credit</p>
+        <button id="particle-button"> 0</button>
+    </div>
+
+     <script>
+       const button = document.getElementById('particle-button');
+
+        button.addEventListener('click', (event) => {
+          const rect = button.getBoundingClientRect();
+          const buttonX = rect.left + rect.width / 2;
+          const buttonY = rect.top + rect.height / 2;
+
+          for (let i = 0; i < 20; i++) {
+             createParticle(buttonX, buttonY);
+          }
+        });
+
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+
+            const angle = Math.random() * 2 * Math.PI; 
+            const distance = Math.random() * 100 + 50; 
+            const xOffset = Math.cos(angle) * distance;
+            const yOffset = Math.sin(angle) * distance;
+
+            const colors = [
+                'rgb(0, 127, 95)',  
+                'rgb(43, 147, 72)',
+                'rgb(85, 166, 48)',
+                'rgb(128, 185, 24)', 
+                'rgb(221, 223, 0)'
+             ];
+    
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.backgroundColor = randomColor;
+
+            particle.style.setProperty('--x', `${xOffset}px`);
+            particle.style.setProperty('--y', `${yOffset}px`);
+            particle.style.left = `${x - 5}px`; 
+            particle.style.top = `${y - 5}px`;
+            
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 5000);
+    }
+
+    </script> 
+      
+    <script>
+        let count = 0;
+        document.getElementById("particle-button").addEventListener("click", function() {
+            count++;
+            this.textContent = `${count}`;
+        });
+    </script>
+</body>
+</html>
